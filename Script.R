@@ -31,9 +31,12 @@ houses[is.na(houses$floor), ]
 houses[is.na(houses$orientation), ]
 
 #possible values of categorical variables
-table(houses$rooms, useNA = "ifany") #useNA = "ifany" adds NA values in column as separate category
-table(houses$flat_type, useNA = "ifany")
-table(houses$orientation, useNA = "ifany")
+table(houses$rooms)
+sum(is.na(houses$rooms))
+table(houses$flat_type)
+sum(is.na(houses$flat_type))
+table(houses$orientation)
+sum(is.na(houses$orientation))
 table(unlist(houses$special_features))
 table(unlist(houses$properties))
 
@@ -48,9 +51,47 @@ set.seed(7)
 houses[sample(nrow(houses), 10), ]
 
 #Task 2
-table(gsub("[0-9.]", "", houses$size), useNA = "ifany")
+#2.1 Apartment size
+table(houses$size)
+houses$size_m2 <- as.numeric(gsub(" m2", "", houses$size))
+#This code failed because in the table not all values have a space between the number and m2
+#So first we clean them sepparately then convert to numeric
+clean_size <- gsub(" m2", "", houses$size)
+clean_size <- gsub("m2", "", clean_size)
 
+houses$size_m2 <- as.numeric(clean_size)
+#We still get NAs. We will inspect the data to see what is going on
+houses$size[is.na(houses$size_m2) & !is.na(houses$size)]
+houses$size_m2
+clean_size
 
+#Actually every single value gets converted to NA. This is probably due to superscript
+clean_size <- gsub(" m²", "", houses$size)
+clean_size <- gsub("m²", "", clean_size)
 
+houses$size_m2 <- as.numeric(clean_size)
+#We did not get a warning now so the conversion did not generate new NAs
+summary(houses$size_m2)
 
+#2.2 Rooms
+houses$number_of_rooms <- as.numeric(substr(houses$rooms, 1, 1))
 
+#Verify
+summary(houses$number_of_rooms)
+table(houses$number_of_rooms, houses$rooms)
+
+#2.3
+houses$price_per_m2 <- houses$price / houses$size_m2
+summary(houses$price_per_m2)
+
+#2.4
+head(houses$location)
+cordinations_list <- strsplit(houses$location, split = ", ")
+head(cordinations_list)
+
+#Now we can create latitude and longitude
+houses$latitude <- as.numeric(sapply(cordinations_list, function(x) x[1]))
+houses$longitude <- as.numeric(sapply(cordinations_list, function(x) x[2]))
+
+summary(houses$latitude)
+summary(houses$longitude)

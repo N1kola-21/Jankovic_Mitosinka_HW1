@@ -47,6 +47,8 @@ tail(houses)
 set.seed(7)
 houses[sample(nrow(houses), 10), ]
 
+#Task 2
+table(gsub("[0-9.]", "", houses$size), useNA = "ifany")
 
 
 

@@ -62,8 +62,8 @@ clean_size <- gsub("m2", "", clean_size)
 houses$size_m2 <- as.numeric(clean_size)
 #We still get NAs. We will inspect the data to see what is going on
 houses$size[is.na(houses$size_m2) & !is.na(houses$size)]
-houses$size_m2
-clean_size
+head(houses$size_m2)
+head(clean_size)
 
 #Actually every single value gets converted to NA. This is probably due to superscript
 clean_size <- gsub(" m²", "", houses$size)
@@ -75,6 +75,7 @@ summary(houses$size_m2)
 class(houses$size_m2)
 
 #2.2 Rooms
+head(houses$rooms)
 houses$number_of_rooms <- as.numeric(substr(houses$rooms, 1, 1))
 
 #Verify
@@ -82,6 +83,7 @@ summary(houses$number_of_rooms)
 table(houses$number_of_rooms, houses$rooms)
 
 #2.3
+head(houses$price)
 houses$price_per_m2 <- houses$price / houses$size_m2
 summary(houses$price_per_m2)
 
@@ -102,7 +104,7 @@ summary(houses$longitude)
 library(tidyverse)
 
 #3.1
-houses$flat_type
+head(houses$flat_type)
 
 flat_type_summary <- houses |>
   group_by(flat_type) |>
@@ -118,7 +120,7 @@ flat_type_summary <- houses |>
 flat_type_summary
 
 #3.2
-houses$orientation
+head(houses$orientation)
 
 orientetion_summary <- houses |>
   filter(!is.na(number_of_rooms), !is.na(orientation)) |>
@@ -139,7 +141,7 @@ orientetion_summary |>
 #3.3 Floors
 
 houses$floor
-houses$number_of_floors
+head(houses$number_of_floors)
 
 #Looking at the output of houses$floors we will assume that 0 means ground floor
 

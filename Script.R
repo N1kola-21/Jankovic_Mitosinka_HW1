@@ -166,5 +166,41 @@ floor_type_summary <- houses |>
 floor_type_summary |>
   arrange(floor_type)
 
+#Part 4
 
-  
+#Structure of the list columns
+houses$properties[1:5]
+houses$special_features[1:5]
+
+#Doesnt work, flat 4 has washching machine, dishwasher but returns false
+houses$properties[1:5] == "dishwasher"
+as.character(houses$properties[4])
+
+#This returns only one value, not for each flat
+"dishwasher" %in% houses$properties
+
+
+#The function
+has_characteristic <- function(list_column, characteristic) {
+  vapply(list_column, function(x) characteristic %in% x, logical(1))
+}
+
+
+houses$has_garage     <- has_characteristic(houses$special_features, "garage")
+houses$has_balcony    <- has_characteristic(houses$special_features, "balcony")
+houses$has_dishwasher <- has_characteristic(houses$properties, "dishwasher")
+
+
+#Check for comparison
+houses$special_features[1:6]
+houses[1:6, c("has_garage", "has_balcony")]
+houses$properties[1:5]
+houses$has_dishwasher[1:5]
+
+
+table(unlist(houses$special_features))
+sum(houses$has_garage)
+sum(houses$has_balcony)
+table(unlist(houses$properties))
+sum(houses$has_dishwasher)
+

@@ -81,6 +81,7 @@ houses$number_of_rooms <- as.numeric(substr(houses$rooms, 1, 1))
 #Verify
 summary(houses$number_of_rooms)
 table(houses$number_of_rooms, houses$rooms)
+class(houses$number_of_rooms)
 
 #2.3
 head(houses$price)

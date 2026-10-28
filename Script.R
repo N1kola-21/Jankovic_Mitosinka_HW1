@@ -54,7 +54,7 @@ houses[sample(nrow(houses), 10), ]
 #2.1 Apartment size
 table(houses$size)
 houses$size_m2 <- as.numeric(gsub(" m2", "", houses$size))
-#This code failed because in the table not all values have a space between the number and m2
+#This code failed because in the table not all values have a space between the number and m2 (NOT THE ACTUAL REASON. KEPT TO SHOW THOUGHT PROCESS)
 #So first we clean them sepparately then convert to numeric
 clean_size <- gsub(" m2", "", houses$size)
 clean_size <- gsub("m2", "", clean_size)

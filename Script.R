@@ -72,6 +72,7 @@ clean_size <- gsub("m²", "", clean_size)
 houses$size_m2 <- as.numeric(clean_size)
 #We did not get a warning now so the conversion did not generate new NAs
 summary(houses$size_m2)
+class(houses$size_m2)
 
 #2.2 Rooms
 houses$number_of_rooms <- as.numeric(substr(houses$rooms, 1, 1))
@@ -131,9 +132,36 @@ orientetion_summary <- houses |>
 
 orientetion_summary
 
-#This order does not make it easy to interpret
+#This order does not make it easy to interpret so we ordered it differently
 orientetion_summary |>
   arrange(number_of_rooms, desc(mean_price_per_m2))
 
-  
+#3.3 Floors
+
+houses$floor
+houses$number_of_floors
+
+#Looking at the output of houses$floors we will assume that 0 means ground floor
+
+floor_type_summary <- houses |>
+  filter(!is.na(floor), !is.na(number_of_floors)) |>
+  mutate(
+    floor_type = case_when(
+      floor == 0 ~ "ground floor",
+      floor == number_of_floors ~ "top floor",
+      floor > 0 & floor < number_of_floors ~ "intermediate floor"
+    )
+  ) |>
+  group_by(floor_type) |>
+  summarise(
+    mean_price = mean(price, na.rm = TRUE),
+    median_price = median(price, na.rm = TRUE),
+    mean_price_per_m2 = mean(price_per_m2, na.rm = TRUE),
+    number_of_observations = n()
+  )
+
+floor_type_summary |>
+  arrange(floor_type)
+
+
   

@@ -52,6 +52,7 @@ houses[sample(nrow(houses), 10), ]
 
 #Task 2
 #2.1 Apartment size
+#Finding which variable to use doesn't require a command. We just search after typing houses$
 table(houses$size)
 houses$size_m2 <- as.numeric(gsub(" m2", "", houses$size))
 #This code failed because in the table not all values have a space between the number and m2 (NOT THE ACTUAL REASON. KEPT TO SHOW THOUGHT PROCESS)
@@ -89,7 +90,6 @@ houses$price_per_m2 <- houses$price / houses$size_m2
 summary(houses$price_per_m2)
 
 #2.4
-#Finding which variable to use doesn't require a command. We just search after typing houses$
 head(houses$location)
 cordinations_list <- strsplit(houses$location, split = ", ")
 head(cordinations_list)

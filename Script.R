@@ -85,6 +85,7 @@ houses$price_per_m2 <- houses$price / houses$size_m2
 summary(houses$price_per_m2)
 
 #2.4
+#Finding which variable to use doesn't require a command. We just search after typing houses$
 head(houses$location)
 cordinations_list <- strsplit(houses$location, split = ", ")
 head(cordinations_list)
@@ -95,3 +96,44 @@ houses$longitude <- as.numeric(sapply(cordinations_list, function(x) x[2]))
 
 summary(houses$latitude)
 summary(houses$longitude)
+
+#Part 3
+library(tidyverse)
+
+#3.1
+houses$flat_type
+
+flat_type_summary <- houses |>
+  group_by(flat_type) |>
+  summarise(
+    number_of_listings = n(),
+    mean_price = mean(price, na.rm = TRUE),
+    median_price = median(price, na.rm = TRUE),
+    mean_size = mean(size_m2, na.rm = TRUE),
+    mean_price_per_m2 = mean(price_per_m2, na.rm = TRUE)
+  ) |>
+  arrange(desc(mean_price_per_m2))
+
+flat_type_summary
+
+#3.2
+houses$orientation
+
+orientetion_summary <- houses |>
+  filter(!is.na(number_of_rooms), !is.na(orientation)) |>
+  group_by(number_of_rooms, orientation) |>
+  summarise(
+    mean_price_per_m2 = mean(price_per_m2, na.rm = TRUE),
+    number_of_observations = n()
+  ) |>
+  filter(number_of_observations >= 5) |>
+  arrange(desc(mean_price_per_m2))
+
+orientetion_summary
+
+#This order does not make it easy to interpret
+orientetion_summary |>
+  arrange(number_of_rooms, desc(mean_price_per_m2))
+
+  
+  

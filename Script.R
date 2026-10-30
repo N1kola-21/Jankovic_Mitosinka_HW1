@@ -260,6 +260,8 @@ sapply_results
 #Check if both results are the same
 all.equal(loop_results, sapply_results)
 
+#Part 6
+
 
 
 

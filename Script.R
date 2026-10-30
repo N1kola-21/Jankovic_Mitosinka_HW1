@@ -1,3 +1,7 @@
+#installing libraries
+library(tidyverse)
+
+
 #identifying our dataset
 our_numbers <- c(55049603, 98396204)
 dataset_number <- sum(our_numbers) %% 60
@@ -101,7 +105,6 @@ summary(houses$latitude)
 summary(houses$longitude)
 
 #Part 3
-library(tidyverse)
 
 #3.1
 head(houses$flat_type)

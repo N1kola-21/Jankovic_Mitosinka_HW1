@@ -178,7 +178,7 @@ houses$special_features[1:5]
 houses$properties[1:5] == "dishwasher"
 as.character(houses$properties[4])
 
-#This returns only one value, not for each flat
+#This returns only one value instead of one value for each flat
 "dishwasher" %in% houses$properties
 
 

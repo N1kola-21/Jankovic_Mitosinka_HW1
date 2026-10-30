@@ -27,7 +27,7 @@ houses$properties[1:5]
 table(lengths(houses$properties))
 
 #any values missing?
-colSums(is.na(houses))
+sapply(houses, function(x) sum(is.na(x)))
 #houses[is.na(houses$size)] error undefined columns, i want rows so need to add the comma
 houses[is.na(houses$size), ]
 houses[is.na(houses$floor), ]
@@ -171,6 +171,7 @@ floor_type_summary |>
 #Part 4
 
 #Structure of the list columns
+
 houses$properties[1:5]
 houses$special_features[1:5]
 
@@ -184,7 +185,7 @@ as.character(houses$properties[4])
 
 #The function
 has_characteristic <- function(list_column, characteristic) {
-  vapply(list_column, function(x) characteristic %in% x, logical(1))
+  sapply(list_column, function(x) characteristic %in% x, logical(1))
 }
 
 
@@ -194,6 +195,7 @@ houses$has_dishwasher <- has_characteristic(houses$properties, "dishwasher")
 
 
 #Check for comparison
+
 houses$special_features[1:6]
 houses[1:6, c("has_garage", "has_balcony")]
 houses$properties[1:5]
@@ -205,4 +207,62 @@ sum(houses$has_garage)
 sum(houses$has_balcony)
 table(unlist(houses$properties))
 sum(houses$has_dishwasher)
+
+
+#Part 5
+
+#Names of variables
+variables <- c("price", 
+               "size_m2", 
+               "number_of_rooms",
+               "price_per_m2", 
+               "floor", 
+               "number_of_floors"
+               )
+
+#All 7 statistics for one vector, will use both methods with this so i dont have to rewrite the same code
+describe_variable <- function(x) {
+  c(n = length(x),
+    n_missing = sum(is.na(x)),
+    mean = mean(x, na.rm = TRUE),   #NA because some variables are not filled out
+    median = median(x, na.rm = TRUE),
+    sd = sd(x, na.rm = TRUE) ,
+    min = min(x, na.rm = TRUE),
+    max = max(x, na.rm = TRUE))
+}
+
+#Check if it works
+describe_variable(houses$price)
+
+#5.1
+
+#Empty matrix fore results; statistics in rows, variables in columns
+loop_results <- matrix(NA, nrow = 7, ncol = length(variables), dimnames = list(
+  c("n", "n_missing", "mean", "median","sd", "min", "max"), variables)
+    )
+
+
+for (i in seq_along(variables)) {
+  loop_results[, i] <- describe_variable(houses[[variables[i]]])   #Fill row of current variable
+}
+
+#Show results
+loop_results
+
+
+#5.2
+#Sapply puts results into columns; statistics in rows, variables in columns
+sapply_results <- sapply(variables, function(var) describe_variable(houses[[var]]))
+
+#Show results
+sapply_results
+
+#Check if both results are the same
+all.equal(loop_results, sapply_results)
+
+
+
+
+
+
 

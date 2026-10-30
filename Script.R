@@ -1,5 +1,3 @@
-setwd("./Jankovic_Mitosinka_HW1")
-
 #identifying our dataset
 our_numbers <- c(55049603, 98396204)
 dataset_number <- sum(our_numbers) %% 60
